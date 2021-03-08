@@ -22,10 +22,12 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        // 보여줄 뷰를 지정
+        // 데이터 소스를 통해 보여줄 뷰를 지정
         self.coachMarksController.dataSource = self
-        //
+        // 델리겟 설정
         self.coachMarksController.delegate = self
+        // overlay tappable(A tap on the overlay will hide the current coach mark and display the next one.)
+        self.coachMarksController.overlay.isUserInteractionEnabled = true
     }
     override func viewDidAppear(_ animated: Bool) {
         super .viewDidAppear(animated)
