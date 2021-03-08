@@ -24,6 +24,14 @@ class ViewController: UIViewController {
         // Do any additional setup after loading the view.
         self.coachMarksController.dataSource = self
     }
+    override func viewDidAppear(_ animated: Bool) {
+        super .viewDidAppear(animated)
+        self.coachMarksController.start(in: .window(over: self))
+    }
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.coachMarksController.stop(immediately: true)
+    }
 }
 //MARK: - viewController extension
 // 보여줄 뷰를 설정
@@ -36,6 +44,11 @@ extension ViewController : CoachMarksControllerDataSource {
         case 0:
             coachViews.bodyView.hintLabel.text = "이것은 당신의 프사입니다."
             coachViews.bodyView.nextLabel.text = "다음!"
+            coachViews.bodyView.background.innerColor = #colorLiteral(red: 0.1764705926, green: 0.4980392158, blue: 0.7568627596, alpha: 1)
+            coachViews.arrowView?.background.innerColor =  #colorLiteral(red: 0.1764705926, green: 0.4980392158, blue: 0.7568627596, alpha: 1)
+            coachViews.bodyView.background.borderColor = .yellow
+            coachViews.bodyView.hintLabel.textColor = .white
+            coachViews.bodyView.nextLabel.textColor = .yellow
         case 1:
             coachViews.bodyView.hintLabel.text = "이것은 당신의 닉네임입니다."
             coachViews.bodyView.nextLabel.text = "다음!"
@@ -52,6 +65,7 @@ extension ViewController : CoachMarksControllerDataSource {
             coachViews.bodyView.hintLabel.text = "이것은 당신의 프사입니다."
             coachViews.bodyView.nextLabel.text = "다음!"
         }
+        //coachviews 와 arrowview 반환
         return (bodyView: coachViews.bodyView, arrowView: coachViews.arrowView)
         
         //5가지의 가이드 할 뷰에 대한 coachView 설정
