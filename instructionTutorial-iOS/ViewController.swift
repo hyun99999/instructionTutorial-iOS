@@ -22,12 +22,17 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        // 보여줄 뷰를 지정
         self.coachMarksController.dataSource = self
+        //
+        self.coachMarksController.delegate = self
     }
     override func viewDidAppear(_ animated: Bool) {
         super .viewDidAppear(animated)
         self.coachMarksController.start(in: .window(over: self))
     }
+    // 뷰가 사라질 때 흐름 종료.
+    // To avoid animation artefacts and timing issues
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         self.coachMarksController.stop(immediately: true)
@@ -94,12 +99,20 @@ extension ViewController : CoachMarksControllerDataSource {
             return coachMarksController.helper.makeCoachMark(for: profileImg)
         }
     }
- 
-    // 몇개의 뷰에 대해 가이드를 제공할 것인가.
-    
 }
-
 extension ViewController : CoachMarksControllerDelegate {
-    
+    //customizing ornaments(장식품) of the overlay(뒤에 넣을 수 있는 뷰).
+    func coachMarksController(_ coachMarksController: CoachMarksController, configureOrnamentsOfOverlay overlay: UIView) {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        overlay.addSubview(label)
+        
+        label.text = "오버레이 입니다."
+        label.alpha = 0.5
+        label.font = label.font.withSize(60)
+        
+        label.centerXAnchor.constraint(equalTo: overlay.centerXAnchor).isActive = true
+        label.topAnchor.constraint(equalTo: overlay.topAnchor,constant: 100).isActive = true
+    }
 }
 
