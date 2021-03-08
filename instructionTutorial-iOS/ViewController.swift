@@ -16,7 +16,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var alartmBtn: UIButton!
     @IBOutlet weak var likeBtn: UIButton!
     
-    // getting started
+    // 'instructions'getting started
     let coachMarksController = CoachMarksController()
     
     override func viewDidLoad() {
@@ -40,7 +40,7 @@ class ViewController: UIViewController {
         self.coachMarksController.stop(immediately: true)
     }
 }
-//MARK: - viewController extension
+//MARK: - CoachMarksControllerDataSource
 // 보여줄 뷰를 설정
 extension ViewController : CoachMarksControllerDataSource {
     // 가이드 마커에 대한 설정(테이블뷰의 셀 설정과 비슷)
@@ -102,6 +102,8 @@ extension ViewController : CoachMarksControllerDataSource {
         }
     }
 }
+
+//MARK: - CoachMarksControllerDelegate
 extension ViewController : CoachMarksControllerDelegate {
     //customizing ornaments(장식품) of the overlay(뒤에 넣을 수 있는 뷰).
     func coachMarksController(_ coachMarksController: CoachMarksController, configureOrnamentsOfOverlay overlay: UIView) {
@@ -115,6 +117,19 @@ extension ViewController : CoachMarksControllerDelegate {
         
         label.centerXAnchor.constraint(equalTo: overlay.centerXAnchor).isActive = true
         label.topAnchor.constraint(equalTo: overlay.topAnchor,constant: 100).isActive = true
+    }
+    //Using a delegate basic optional three things
+    // coach mark will show. when you want to change something about the view.
+    func coachMarksController(_ coachMarksController: CoachMarksController, willShow coachMark: inout CoachMark, beforeChanging change: ConfigurationChange, at index: Int) {
+        print("willShow: index:\(index)")
+    }
+    // coach mark disappears
+    func coachMarksController(_ coachMarksController: CoachMarksController, willHide coachMark: CoachMark, at index: Int) {
+        print("willHide() index: \(index)")
+    }
+    //Whether to skip
+    func coachMarksController(_ coachMarksController: CoachMarksController, didEndShowingBySkipping skipped: Bool) {
+        print("스킵여부: ",skipped)
     }
 }
 
