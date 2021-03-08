@@ -28,6 +28,14 @@ class ViewController: UIViewController {
         self.coachMarksController.delegate = self
         // overlay tappable(A tap on the overlay will hide the current coach mark and display the next one.)
         self.coachMarksController.overlay.isUserInteractionEnabled = true
+        
+        //스킵할 수 있는 뷰를 지정
+        let skipView = CoachMarkSkipDefaultView()
+        skipView.setTitle("튜토리얼 스킵하기", for: .normal)
+        self.coachMarksController.skipView = skipView
+        
+        //status바 없애기
+        self.coachMarksController.statusBarVisibility = .hidden
     }
     override func viewDidAppear(_ animated: Bool) {
         super .viewDidAppear(animated)
