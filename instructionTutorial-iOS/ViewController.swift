@@ -29,12 +29,15 @@ class ViewController: UIViewController {
         // overlay tappable(A tap on the overlay will hide the current coach mark and display the next one.)
         self.coachMarksController.overlay.isUserInteractionEnabled = true
         
+        //animation delegate
+        self.coachMarksController.animationDelegate = self
+        
         //스킵할 수 있는 뷰를 지정
         let skipView = CoachMarkSkipDefaultView()
         skipView.setTitle("튜토리얼 스킵하기", for: .normal)
         self.coachMarksController.skipView = skipView
         
-        //status바 없애기
+        //튜토리얼 중에 status바 없애기
         self.coachMarksController.statusBarVisibility = .hidden
     }
     override func viewDidAppear(_ animated: Bool) {
@@ -139,5 +142,35 @@ extension ViewController : CoachMarksControllerDelegate {
     func coachMarksController(_ coachMarksController: CoachMarksController, didEndShowingBySkipping skipped: Bool) {
         print("스킵여부: ",skipped)
     }
+}
+
+//MARK: - CoachMarksControllerAnimationDelegate
+
+extension ViewController: CoachMarksControllerAnimationDelegate {
+    //마커가 나타날때
+    func coachMarksController(_ coachMarksController: CoachMarksController, fetchAppearanceTransitionOfCoachMark coachMarkView: UIView, at index: Int, using manager: CoachMarkTransitionManager) {
+        manager.parameters.options = [.beginFromCurrentState]
+        manager.animate(.regular) { (CoachMarkAnimationManagementContext) in
+            coachMarkView.transform = .identity
+            coachMarkView.alpha = 1
+        } fromInitialState: {
+            coachMarkView.transform = CGAffineTransform(scaleX: 0.5, y: 0.5)
+            coachMarkView.alpha = 0
+        }
+    }
+    //마커가 사라질때
+    func coachMarksController(
+        _ coachMarksController: CoachMarksController,
+        fetchDisappearanceTransitionOfCoachMark coachMarkView: UIView,
+        at index: Int,
+        using manager: CoachMarkTransitionManager
+    )
+    //마커가 떠있을때
+    func coachMarksController(
+        _ coachMarksController: CoachMarksController,
+        fetchIdleAnimationOfCoachMark coachMarkView: UIView,
+        at index: Int,
+        using manager: CoachMarkAnimationManager
+    )
 }
 
