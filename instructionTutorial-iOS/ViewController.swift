@@ -184,7 +184,12 @@ extension ViewController: CoachMarksControllerAnimationDelegate {
         at index: Int,
         using manager: CoachMarkAnimationManager
     ) {
-        
+        manager.parameters.options=[.repeat, .autoreverse, .allowUserInteraction]
+        manager.parameters.duration = 0.7
+        manager.animate(.regular) { (context: CoachMarkAnimationManagementContext) in
+            let offset: CGFloat = context.coachMark.arrowOrientation == .top ? 10: -10
+            coachMarkView.transform=CGAffineTransform(translationX: 0, y: offset)
+        }
     }
 }
 
