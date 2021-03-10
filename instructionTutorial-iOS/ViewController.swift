@@ -156,6 +156,7 @@ extension ViewController: CoachMarksControllerAnimationDelegate {
         } fromInitialState: {
             coachMarkView.transform = CGAffineTransform(scaleX: 0.5, y: 0.5)
             coachMarkView.alpha = 0
+        } completion: { (Bool) in
         }
     }
     //마커가 사라질때
@@ -164,13 +165,26 @@ extension ViewController: CoachMarksControllerAnimationDelegate {
         fetchDisappearanceTransitionOfCoachMark coachMarkView: UIView,
         at index: Int,
         using manager: CoachMarkTransitionManager
-    )
+    ) {
+        manager.animate(.keyframe) { (CoachMarkAnimationManagementContext) in
+            // 크기를 절반크기로 줄어들게 함
+            UIView.addKeyframe(withRelativeStartTime: 0.0, relativeDuration: 1){
+                coachMarkView.transform = CGAffineTransform(scaleX: 0.5, y: 0.5)
+            }
+            // 줄어든 후 0.5 크기가 되었을 때 투명하게
+            UIView.addKeyframe(withRelativeStartTime: 0.5, relativeDuration: 0.5) {
+                coachMarkView.alpha = 0
+            }
+        }
+    }
     //마커가 떠있을때
     func coachMarksController(
         _ coachMarksController: CoachMarksController,
         fetchIdleAnimationOfCoachMark coachMarkView: UIView,
         at index: Int,
         using manager: CoachMarkAnimationManager
-    )
+    ) {
+        
+    }
 }
 
